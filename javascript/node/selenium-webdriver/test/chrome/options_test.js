@@ -93,6 +93,24 @@ describe('chrome.Options', function() {
       assert.equal(await wire['goog:chromeOptions'].extensions[0], expected);
     });
   });
+
+  describe('windowTypes', function() {
+    it('takes var_args', function() {
+      let options = new chrome.Options();
+      assert.strictEqual(options.options_.windowTypes, undefined);
+
+      options.windowTypes('window', 'webview');
+      assert.deepEqual(options.options_.windowTypes, ['window', 'webview']);
+    });
+
+    it('flattens input arrays', function() {
+      let options = new chrome.Options();
+      assert.strictEqual(options.options_.windowTypes, undefined);
+
+      options.windowTypes(['a', 'b'], 'c', [1, 2], 3);
+      assert.deepEqual(options.options_.windowTypes, ['a', 'b', 'c', 1, 2, 3]);
+    });
+  });
 });
 
 test.suite(function(env) {
